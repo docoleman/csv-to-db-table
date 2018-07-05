@@ -14,7 +14,8 @@ Table names will be validated for compliance with SQL naming standards. SQL
 reserved keywords will be rejected as table names.
 
 ## Usage ##
-usage: csv\_to\_db\_file [-h] [-x  [...]] [-r  [...]] table [FILE]
+```
+usage: csv_to_db_file [-h] [-x  [...]] [-r  [...]] table [FILE]
 
 convert a CSV file to database table definition
 
@@ -31,4 +32,4 @@ optional arguments:
 
 table names will be rejected for failing to conform to SQL standards. Reserved
 keywords, etc.
-
+```
