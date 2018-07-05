@@ -33,3 +33,9 @@ optional arguments:
 table names will be rejected for failing to conform to SQL standards. Reserved
 keywords, etc.
 ```
+
+## Inspiration ##
+The inspiration for this program came from importing square transaction data
+into a table for analysis. The structure of the data changes sometimes and it
+caused imports to fail. Creating a very simple initial import table with a load
+script to move data to the processing tables helped a lot.
