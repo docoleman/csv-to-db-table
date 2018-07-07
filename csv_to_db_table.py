@@ -74,8 +74,11 @@ class CsvToDbTable:
             return {'valid':False, 'message':message}
 
         # 64 is a magic number for object name length in some SQL implementations
+        # It is used as the default max_name_length. If a different length is
+        # required, it can be configured on the command line
         if len(table_name) > self.max_name_length:
-            message = "{0} is too long. Please use 64 or fewer characters.".format(table_name)
+            message = ("{0} is too long. Please use {1} or fewer characters"
+                    ).format(table_name, self.max_name_length)
             return {'valid':False, 'message':message}
 
         # List of banned words that will cause object naming to fail

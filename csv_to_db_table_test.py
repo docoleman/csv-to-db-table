@@ -27,19 +27,27 @@ class TestCsvToDbTable(unittest.TestCase):
 
 
     def test_valid_table_name_too_long(self):
-        self.assertFalse(self.csvToDbTable.valid_table_name(
-            'bad_name', ['bad_name', 'invalid_name']
-        )['valid'])
+        table_name = ("ThisNameIsWayTooLongIfItWasShorterItWouldBeValidButIt"
+                "IsTooLongSoItIsNotValid")
+        expected = ("ThisNameIsWayTooLongIfItWasShorterItWouldBeValidButItIs"
+                "TooLongSoItIsNotValid is too long. Please use 64 or fewer"
+                " characters")
+        actual = self.csvToDbTable.valid_table_name(
+            table_name,
+            ['bad_name', 'invalid_name']
+        )
+        self.assertFalse(actual['valid'])
+        self.assertEqual(expected, actual['message'])
 
 
     def test_valid_table_name_spaces(self):
         expected = ("Table name cannot contain whitespace. Please remove "
                 "whitespace from bad name")
-        valid_result = self.csvToDbTable.valid_table_name(
+        actual = self.csvToDbTable.valid_table_name(
             'bad name', ['bad_name', 'invalid_name']
         )
-        self.assertFalse(valid_result['valid'])
-        self.assertEqual(expected, valid_result['message'])
+        self.assertFalse(actual['valid'])
+        self.assertEqual(expected, actual['message'])
 
 
 if __name__ == "__main__":
