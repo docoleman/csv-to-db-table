@@ -1,6 +1,7 @@
 from argparse import ArgumentParser,FileType as ArgParseFileType
 from sys import stdin, stderr, exit as sysexit
 import csv
+import re
 
 class CsvToDbTable:
     '''
@@ -66,9 +67,15 @@ class CsvToDbTable:
 
 
     def valid_table_name(self, table_name, banned_words=None):
+        # Table name may not contain any spaces
+        if re.search(r"\s", table_name):
+            message = ("Table name cannot contain whitespace. Please remove "
+                    "whitespace from {0}").format(table_name)
+            return {'valid':False, 'message':message}
+
         # 64 is a magic number for object name length in some SQL implementations
         if len(table_name) > self.max_name_length:
-            message = "{0} is too long. Please use 64 or fewer characters.".format(table_name);
+            message = "{0} is too long. Please use 64 or fewer characters.".format(table_name)
             return {'valid':False, 'message':message}
 
         # List of banned words that will cause object naming to fail
