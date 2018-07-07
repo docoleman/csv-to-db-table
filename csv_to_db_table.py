@@ -20,7 +20,8 @@ class CsvToDbTable:
             conclusion="\n);",
             table_name=None,
             default_type="NVARCHAR(512)",
-            separator=",\n  "
+            separator=",\n  ",
+            max_name_length=64
     ):
         self.arg_parser = self.init_args(arg_parser)
         self.preamble_format = preamble_format
@@ -28,6 +29,7 @@ class CsvToDbTable:
         self.table_name = None
         self.default_type = default_type
         self.separator = separator
+        self.max_name_length = max_name_length
 
 
     def error_message(self, message=""):
@@ -65,7 +67,7 @@ class CsvToDbTable:
 
     def valid_table_name(self, table_name, banned_words=None):
         # 64 is a magic number for object name length in some SQL implementations
-        if len(table_name) > 64:
+        if len(table_name) > self.max_name_length:
             message = "{0} is too long. Please use 64 or fewer characters.".format(table_name);
             return {'valid':False, 'message':message}
 
@@ -88,10 +90,17 @@ class CsvToDbTable:
             except StopIteration:
                 return False
 
-            columns = [{'name':x.lower().replace(" ", "_"), 'type':self.default_type}
+            columns = [{'name':self.format_column(x), 'type':self.default_type}
                     for x in header]
 
         return columns
+
+
+    def format_column(self, column):
+        fixed_column = column.lower()
+        fixed_column = fixed_column.replace(" ", "_")
+        fixed_column = fixed_column[:self.max_name_length]
+        return fixed_column
 
 
     def main(self):
