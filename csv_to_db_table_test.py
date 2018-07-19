@@ -50,5 +50,29 @@ class TestCsvToDbTable(unittest.TestCase):
         self.assertEqual(expected, actual['message'])
 
 
+    def test_format_column_upper(self):
+        self.assertEqual("upper", self.csvToDbTable.format_column("UPPER"))
+
+
+    def test_format_column_no_change(self):
+        self.assertEqual("no-change", self.csvToDbTable.format_column("no-change"))
+
+
+    def test_format_column_empty_string(self):
+        self.assertEqual("", self.csvToDbTable.format_column(""))
+
+
+    def test_format_column_spaces(self):
+        self.assertEqual("s_paces", self.csvToDbTable.format_column("s paces"))
+
+
+    def test_format_column_max_length(self):
+        name = ("thisnameiswaytoolongifitwasshorteritwouldbevalidbutit"
+                "istoolongsoitwillbeshortened")
+        expected = ("thisnameiswaytoolongifitwasshorteritwouldbevalidbutitis"
+                "toolongso")
+        self.assertEqual(expected, self.csvToDbTable.format_column(name))
+
+
 if __name__ == "__main__":
     unittest.main()
